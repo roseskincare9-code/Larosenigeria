@@ -533,6 +533,7 @@ footer strong{color:var(--pink2);}
       <div class="fg"><label>Quantity</label><select id="qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
       <div class="fg"><label>Notes (optional)</label><input type="text" id="nt" maxlength="500" placeholder="Landmark, best time to call, etc."></div>
       <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" id="skyfly_hp" tabindex="-1" autocomplete="off"></div>
+      <div id="skyUp" style="display:none;border:2px dashed #E8C989;background:#FFFDF7;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:14px;line-height:1.5"></div>
       <div id="skySum" aria-live="polite" style="display:none;background:#FFF8EC;border:1px solid #E8C989;color:#3D2A10;padding:12px 14px;border-radius:10px;font-size:14px;line-height:1.6;margin-bottom:12px"></div>
       <div id="skyErr" role="alert" style="display:none;background:#FEF2F2;border:1px solid #FCA5A5;color:#B91C1C;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6;margin-bottom:12px"></div>
       <button class="subbtn" id="sb" onclick="doSub()">🛍️ Place My Order →</button>
@@ -540,11 +541,12 @@ footer strong{color:var(--pink2);}
     </div>
     <div class="succbox" id="sb2" role="status" aria-live="polite">
       <div class="ck">🎉</div>
-      <h3 id="skyThanks">Thank you! Your order is confirmed.</h3>
+      <h3 id="skyThanks">Thank you! We have received your order.</h3>
       <div id="skyConf" style="background:#FFF8EC;border:1px solid #E8C989;color:#3D2A10;padding:14px 16px;border-radius:10px;font-size:14px;line-height:1.8;text-align:left;margin:14px 0"></div>
-      <p><strong>What happens next:</strong> our team will call you within <strong>1 hour</strong> (8am–8pm) to confirm your package and delivery. You pay when your order arrives.</p>
+      <p id="skyNext">Our team will contact you shortly to confirm the details and delivery. You can speak with our representative on WhatsApp using the button below. Please keep your order reference for follow-up. You pay when your order arrives.</p>
+      <a id="skyWa" href="https://wa.me/2349049206695" target="_blank" rel="noopener" style="display:block;margin:14px auto 0;max-width:340px;padding:14px 18px;border-radius:12px;background:#25D366;color:#fff;font-weight:700;text-decoration:none;text-align:center">💬 Chat with us on WhatsApp</a>
+      <p style="margin-top:6px;font-size:12px;color:var(--muted)">Optional: your order is already saved.</p>
       <p style="margin-top:10px"><a id="skyView" href="#" style="color:var(--purple);font-weight:600">View your order details</a> · <a href="#" id="skyAgain" style="color:var(--muted)">Place another order</a></p>
-      <p style="margin-top:10px;font-size:12px">Questions? <a href="https://wa.me/2349049206695" target="_blank" rel="noopener" style="color:var(--pink2)">WhatsApp 09049206695</a></p>
     </div>
   </div>
 </section>
@@ -602,16 +604,34 @@ function skyShowError(msg,fields){
   box.style.display='block';
   box.scrollIntoView({behavior:'smooth',block:'center'});
 }
+// Optional upsell set for this page in Skyfly (Landing pages → larosenigeria → Upsell). Nothing shows
+// when none is set. Skyfly prices it again when the order is saved; the page's total is a preview.
+let skyUpsell=null,skyAdd=false;
+function skyRenderUpsell(){
+  const box=document.getElementById('skyUp');if(!box)return;
+  if(!skyUpsell){box.style.display='none';return;}
+  box.textContent='';
+  const h=document.createElement('div');h.style.fontWeight='700';h.textContent=skyUpsell.headline;box.appendChild(h);
+  if(skyUpsell.text){const d=document.createElement('div');d.style.color='#6B5A3A';d.textContent=skyUpsell.text;box.appendChild(d);}
+  const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px;margin-top:8px';
+  const n=document.createElement('span');n.textContent=skyUpsell.name+' · ₦'+skyUpsell.price.toLocaleString('en-NG');row.appendChild(n);
+  const b=document.createElement('button');b.type='button';b.id='skyAddBtn';b.textContent=skyAdd?'Added ✓ (remove)':'Add';
+  b.style.cssText='margin-left:auto;padding:9px 16px;border:0;border-radius:10px;background:'+(skyAdd?'#3D2A10':'#7B2D8B')+';color:#fff;font-weight:700;cursor:pointer';
+  b.onclick=function(){skyAdd=!skyAdd;skyRenderUpsell();skyUpdateSummary();};
+  row.appendChild(b);box.appendChild(row);box.style.display='block';
+}
+fetch(SKYFLY_API+'/api/public/pages/'+SKYFLY_PAGE+'/catalog').then(r=>r.ok?r.json():null).then(c=>{if(c&&c.upsell&&c.upsell.code){skyUpsell=c.upsell;skyRenderUpsell();skyUpdateSummary();}}).catch(()=>{});
 // Order summary: package × quantity and the total, shown before the customer submits.
 function skyUpdateSummary(){
   const sel=document.getElementById('pr'),q=document.getElementById('qty'),box=document.getElementById('skySum');
   if(!sel||!q||!box)return;
   const opt=sel.options[sel.selectedIndex],qty=parseInt(q.value,10)||1;
   if(!sel.value||!opt||!opt.dataset.price){box.style.display='none';return;}
-  const name=opt.value.replace(/\s+–\s+₦[\d,]+$/,''),total=Number(opt.dataset.price)*qty;
+  const name=opt.value.replace(/\s+–\s+₦[\d,]+$/,''),total=Number(opt.dataset.price)*qty+(skyAdd&&skyUpsell?skyUpsell.price:0);
   box.textContent='';
   const t=document.createElement('div');t.style.fontWeight='700';t.textContent='Your order';box.appendChild(t);
   const l=document.createElement('div');l.textContent=name+' × '+qty;box.appendChild(l);
+  if(skyAdd&&skyUpsell){const a=document.createElement('div');a.textContent='+ '+skyUpsell.name+' (add-on) · ₦'+skyUpsell.price.toLocaleString('en-NG');box.appendChild(a);}
   const s=document.createElement('div');s.style.fontWeight='700';s.textContent='Total: ₦'+total.toLocaleString('en-NG')+' · pay on delivery';box.appendChild(s);
   box.style.display='block';
 }
@@ -640,7 +660,7 @@ async function doSub(){
   const q=new URLSearchParams(location.search);
   const order={landingPage:SKYFLY_PAGE,
     customer:{name:fn,phone:ph,email:em,address:addr,state:st,notes:nt},
-    items:[{product:opt.dataset.product,quantity:qty,unitPrice:Number(opt.dataset.price)}],
+    items:[{product:opt.dataset.product,quantity:qty,unitPrice:Number(opt.dataset.price)}].concat(skyAdd&&skyUpsell?[{product:skyUpsell.code,quantity:1,upsell:true,unitPrice:skyUpsell.price}]:[]),
     website:document.getElementById('skyfly_hp').value};
   order.idempotencyKey=skyKey(JSON.stringify(order));
   order.attribution={pageUrl:location.href,referrer:document.referrer,utm_source:q.get('utm_source'),utm_medium:q.get('utm_medium'),utm_campaign:q.get('utm_campaign'),utm_content:q.get('utm_content'),utm_term:q.get('utm_term')};
@@ -669,7 +689,9 @@ async function doSub(){
     try{if(window.Skyfly&&Skyfly.trackLead)Skyfly.trackLead(data.total,data.currency,data.reference);}catch(e){}
     // One Purchase per saved order (never for test orders); Skyfly keeps it from repeating on retries or refreshes.
     try{if(window.Skyfly&&Skyfly.trackPurchase)Skyfly.trackPurchase(data);}catch(e){}
-    const conf={name:fn,reference:data.reference,item:opt.value.replace(/\s+–\s+₦[\d,]+$/,''),quantity:qty,total:data.total,currency:data.currency,url:data.confirmationUrl};
+    // What Skyfly saved and priced (package and any add-on), not the browser's own figures.
+    const saved=(data.items||[]).map(i=>i.name+' × '+i.quantity+(i.upsell?' (add-on)':'')).join(', ');
+    const conf={name:fn,reference:data.reference,item:saved||opt.value.replace(/\s+–\s+₦[\d,]+$/,'')+' × '+qty,total:data.total,currency:data.currency,url:data.confirmationUrl,wa:data.whatsappUrl};
     skyStore('skyflyConfirmed',JSON.stringify(conf));
     skyShowConfirmation(conf);
     return;
@@ -689,10 +711,12 @@ async function doSub(){
 function skyShowConfirmation(c){
   const box=document.getElementById('skyConf');box.textContent='';
   const fmt=(n)=>(c.currency==='NGN'?'₦':c.currency+' ')+Number(n).toLocaleString('en-NG');
-  [['Order reference',c.reference],['Package',c.item],['Quantity',String(c.quantity)],['Total (pay on delivery)',fmt(c.total)]].forEach(([k,v])=>{
+  [['Order reference',c.reference],['Order',c.item+(c.quantity?' × '+c.quantity:'')],['Total (pay on delivery)',fmt(c.total)]].forEach(([k,v])=>{
     const row=document.createElement('div');const b=document.createElement('strong');b.textContent=k+': ';row.appendChild(b);
     const val=document.createElement('span');val.textContent=v;if(k==='Order reference')val.id='skyRef';row.appendChild(val);box.appendChild(row);});
-  document.getElementById('skyThanks').textContent='Thank you'+(c.name?', '+c.name.split(' ')[0]:'')+'! Your order is confirmed.';
+  document.getElementById('skyThanks').textContent='Thank you'+(c.name?', '+c.name.split(' ')[0]:'')+'! We have received your order.';
+  // WhatsApp hand-off with the order reference prefilled (optional: the order is already saved).
+  document.getElementById('skyWa').href=c.wa||('https://wa.me/'+WA+'?text='+encodeURIComponent('Hi Larose! I just placed order '+c.reference+'. Please confirm my order. Thank you!'));
   const view=document.getElementById('skyView');if(c.url){view.href=c.url;view.style.display='';}else{view.style.display='none';}
   document.getElementById('formContent').style.display='none';
   document.getElementById('sb2').style.display='block';
