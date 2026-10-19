@@ -561,8 +561,9 @@ footer strong{color:var(--pink2);}
 <script>
 const WA="2349049206695";
 const SHEET="https://sheetdb.io/api/v1/m111fq96ve953";
-let end=sessionStorage.getItem('ngEnd');
-if(!end){end=Date.now()+24*60*60*1000;sessionStorage.setItem('ngEnd',end);}
+// Storage can be unavailable (private mode, sandboxed hosting): the countdown then starts at 24h.
+let end=null;try{end=sessionStorage.getItem('ngEnd');}catch(e){}
+if(!end){end=Date.now()+24*60*60*1000;try{sessionStorage.setItem('ngEnd',end);}catch(e){}}
 end=parseInt(end);
 function tick(){
   const left=Math.max(0,end-Date.now());
@@ -588,7 +589,11 @@ let skyMem={};
 function skyStore(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v);}catch(e){if(v===undefined)return skyMem[k]||null;skyMem[k]=v;}}
 function skyRandom(){if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();let s='';const a=new Uint8Array(16);crypto.getRandomValues(a);a.forEach(b=>s+=b.toString(16).padStart(2,'0'));return s;}
 // Same details => same key, so retries and double clicks never create a second order.
-function skyKey(payloadText){if(skyStore('skyflyPayload')!==payloadText){skyStore('skyflyKey',skyRandom());skyStore('skyflyPayload',payloadText);}return skyStore('skyflyKey');}
+// Without browser storage (e.g. a sandboxed page) the ID comes from the details and a 30-minute window,
+// so submitting the same order again after a refresh returns the saved order instead of a second one.
+const skyCanStore=(function(){try{sessionStorage.setItem('sky_t','1');sessionStorage.removeItem('sky_t');return true;}catch(e){return false;}})();
+function skyHash(t){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<t.length;i++){const c=t.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677);}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (h2>>>0).toString(36)+(h1>>>0).toString(36);}
+function skyKey(payloadText){if(!skyCanStore)return 'skyh-'+skyHash(payloadText)+'-'+Math.floor(Date.now()/1800000).toString(36);if(skyStore('skyflyPayload')!==payloadText){skyStore('skyflyKey',skyRandom());skyStore('skyflyPayload',payloadText);}return skyStore('skyflyKey');}
 const SKY_FIELDS={name:'fn',phone:'ph',address:'addr',email:'em',state:'st',items:'pr',quantity:'qty'};
 function skyShowError(msg,fields){
   const box=document.getElementById('skyErr');
