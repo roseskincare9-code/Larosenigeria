@@ -183,7 +183,7 @@ section{padding:70px 20px;}
 .wafbtn{width:60px;height:60px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(37,211,102,.5);cursor:pointer;animation:wap 2s infinite;text-decoration:none;}
 .wafbtn svg{width:26px;height:26px;fill:#fff;}
 @keyframes wap{0%,100%{box-shadow:0 6px 28px rgba(37,211,102,.5)}50%{box-shadow:0 6px 40px rgba(37,211,102,.85),0 0 0 12px rgba(37,211,102,.1)}}
-.wabub{background:var(--dark);color:#fff;padding:8px 14px;border-radius:12px 12px 0 12px;font-size:12px;font-weight:600;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:opacity .3s;}
+.wabub{background:var(--dark);color:#fff;padding:8px 14px;border-radius:12px 12px 0 12px;font-size:12px;font-weight:600;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:opacity .3s;pointer-events:none;}
 .wabub span{color:var(--green);}
 .sbot{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--pink),var(--purple));padding:12px 20px;text-align:center;z-index:200;transform:translateY(100%);transition:transform .4s ease;}
 .sbot.show{transform:translateY(0);}
@@ -528,9 +528,9 @@ footer strong{color:var(--pink2);}
         </select>
       </div>
       <div class="fg"><label for="fn">Full Name *</label><input type="text" id="fn" placeholder="Your full name" autocomplete="name" required></div>
+      <div class="fg"><label for="addr">Full Delivery Address *</label><input type="text" id="addr" placeholder="House number, street, area, city and state" autocomplete="street-address" required></div>
       <div class="fg"><label for="ph">Phone Number *</label><input type="tel" id="ph" placeholder="08XXXXXXXXXX" autocomplete="tel" inputmode="tel" required></div>
       <div class="fg"><label for="em">Email Address *</label><input type="email" id="em" placeholder="your@email.com" autocomplete="email" inputmode="email" required></div>
-      <div class="fg"><label for="addr">Delivery Address *</label><input type="text" id="addr" placeholder="Your full delivery address" autocomplete="street-address" required></div>
       <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" id="skyfly_hp" tabindex="-1" autocomplete="off"></div>
       <div id="skyUp" style="display:none;border:2px dashed #E8C989;background:#FFFDF7;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:14px;line-height:1.5"></div>
       <div id="skySum" aria-live="polite" style="display:none;background:#FFF8EC;border:1px solid #E8C989;color:#3D2A10;padding:12px 14px;border-radius:10px;font-size:14px;line-height:1.6;margin-bottom:12px"></div>
@@ -681,7 +681,7 @@ async function doSub(){
   else if(ph.replace(/\D/g,'').length<10)missing.phone='Enter a valid phone number, e.g. 08012345678.';
   if(!em)missing.email='Enter your email address.';
   else if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em))missing.email='Enter a valid email address, e.g. name@gmail.com.';
-  if(!addr)missing.address='Enter your delivery address.';
+  if(addr.length<5)missing.address='Enter your full delivery address (house number, street, area, city and state).';
   if(Object.keys(missing).length){skyShowError('Please fill in all required fields.',missing);return;}
 
   const q=new URLSearchParams(location.search);
