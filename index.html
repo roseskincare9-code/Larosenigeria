@@ -663,6 +663,18 @@ function skyUpdateSummary(){
 }
 document.addEventListener('change',function(e){if(e.target&&(e.target.id==='pr'||e.target.id==='qty'))skyUpdateSummary();});
 if(typeof selectPkg==='function'){const skyPick=selectPkg;selectPkg=function(v){skyPick(v);skyUpdateSummary();};}
+// Unfinished checkouts (Skyfly → Abandoned Checkouts): the chosen package, add-on and the details typed
+// so far are saved as the customer goes, so Larose can see orders that were started but not placed.
+// Nothing about payment is collected. It never blocks or changes the order form.
+function skySaveProgress(){try{
+  if(!window.Skyfly||!Skyfly.saveCheckout)return;
+  const sel=document.getElementById('pr'),opt=sel&&sel.options[sel.selectedIndex];
+  const v=(id)=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+  const items=opt&&opt.dataset.product?[{product:opt.dataset.product,quantity:1}].concat(skyAdd&&skyUpsell?[{product:skyUpsell.code,quantity:1,upsell:true}]:[]):[];
+  Skyfly.saveCheckout({landingPage:SKYFLY_PAGE,customer:{name:v('fn'),phone:v('ph'),email:v('em'),address:v('addr')},items:items});
+}catch(e){}}
+document.addEventListener('input',function(e){if(e.target&&['fn','ph','em','addr'].indexOf(e.target.id)!==-1)skySaveProgress();});
+document.addEventListener('change',function(e){if(e.target&&(e.target.id==='pr'||e.target.id==='skyAddBtn'))skySaveProgress();});
 skyUpdateSummary();
 let skyBusy=false,skyAttempted={};
 async function doSub(){
@@ -688,7 +700,9 @@ async function doSub(){
   const order={landingPage:SKYFLY_PAGE,
     customer:{name:fn,phone:ph,email:em,address:addr},
     items:[{product:opt.dataset.product,quantity:qty,unitPrice:Number(opt.dataset.price)}].concat(skyAdd&&skyUpsell?[{product:skyUpsell.code,quantity:1,upsell:true,unitPrice:skyUpsell.price}]:[]),
-    website:document.getElementById('skyfly_hp').value};
+    website:document.getElementById('skyfly_hp').value,
+    // The unfinished checkout this order completes (so it is not listed as abandoned).
+    checkoutId:(window.Skyfly&&Skyfly.checkoutId&&Skyfly.checkoutId(SKYFLY_PAGE))||undefined};
   order.idempotencyKey=skyKey(JSON.stringify(order));
   // Without storage, a "same order again" reply for a submission this visit never sent was already
   // counted on an earlier visit (e.g. refresh, then the same details again): shown, not counted twice.
