@@ -123,6 +123,8 @@ section{padding:70px 20px;}
 .pkg-img-item{aspect-ratio:1;overflow:hidden;border-radius:8px;border:1px solid rgba(123,45,139,.2);background:#fff;}
 .pkg-img-item img{width:100%;height:100%;object-fit:cover;display:block;}
 .pkg-img-label{text-align:center;font-size:9px;color:var(--muted);margin-top:2px;}
+.pkg-imgs.trio{grid-template-columns:repeat(3,1fr);gap:6px;}
+.pkg-imgs.trio .pkg-img-item{aspect-ratio:3/4;}
 .pkg.star .pkg-img-label,.pkg.premium .pkg-img-label,.pkg.vip .pkg-img-label{color:var(--pinklight);}
 .pkg-includes{margin-bottom:0;}
 .pkg-includes li{font-size:12px;color:var(--muted);line-height:1.9;list-style:none;display:flex;align-items:flex-start;gap:7px;}
@@ -413,7 +415,7 @@ footer strong{color:var(--pink2);}
       <div class="pkg premium fi">
         <div class="pkg-badge pink">✨ BIG SIZE</div><div class="pkg-top">
           <h3 class="pkg-name">2 Litre Halfcast Super Fort Herbal Soap</h3>
-          <div class="pkg-imgs" style="grid-template-columns:1fr;max-width:160px;margin:0 auto 14px;"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 2 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">2 Litre Halfcast Soap</div></div></div>
+          <div class="pkg-imgs" aria-label="Two 1 Litre tubs (2 Litres)"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 1 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">1 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 1 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">1 Litre Halfcast Soap</div></div></div>
           <ul class="pkg-includes"><li>2 Litre Halfcast Super Fort Herbal Soap</li><li>Longer-lasting supply</li></ul>
         </div>
         <div class="pkg-bottom">
@@ -425,7 +427,7 @@ footer strong{color:var(--pink2);}
       <div class="pkg vip fi">
         <div class="pkg-badge gold">👑 FULL ROUTINE</div><div class="pkg-top">
           <h3 class="pkg-name">2 Litre Halfcast Super Fort Herbal Soap + Fruit Essence Skin Glowing Oil</h3>
-          <div class="pkg-imgs"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 2 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">2 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-glow-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
+          <div class="pkg-imgs trio" aria-label="Two 1 Litre tubs (2 Litres) and one Fruit Essence Skin Glowing Oil"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 1 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">1 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 1 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">1 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-glow-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
           <ul class="pkg-includes"><li>2 Litre Halfcast Super Fort Herbal Soap</li><li>Fruit Essence Skin Glowing Oil</li><li>Longer-lasting supply</li></ul>
         </div>
         <div class="pkg-bottom">
