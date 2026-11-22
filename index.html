@@ -377,7 +377,7 @@ footer strong{color:var(--pink2);}
       <div class="pkg  fi">
         <div class="pkg-badge purple">SOAP + OIL</div><div class="pkg-top">
           <h3 class="pkg-name">500g Halfcast Super Fort Herbal Soap + Fruit Essence Skin Glowing Oil</h3>
-          <div class="pkg-imgs"><div><div class="pkg-img-item"><img src="images/halfcast-soap-500g.jpg" alt="Larose 500g Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">500g Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-skin-glowing-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
+          <div class="pkg-imgs"><div><div class="pkg-img-item"><img src="images/halfcast-soap-500g.jpg" alt="Larose 500g Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">500g Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-glow-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
           <ul class="pkg-includes"><li>500g Halfcast Super Fort Herbal Soap</li><li>Fruit Essence Skin Glowing Oil</li><li>Soap + oil in one routine</li></ul>
         </div>
         <div class="pkg-bottom">
@@ -401,7 +401,7 @@ footer strong{color:var(--pink2);}
       <div class="pkg  fi">
         <div class="pkg-badge purple">SOAP + OIL</div><div class="pkg-top">
           <h3 class="pkg-name">1 Litre Halfcast Super Fort Herbal Soap + Fruit Essence Skin Glowing Oil</h3>
-          <div class="pkg-imgs"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 1 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">1 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-skin-glowing-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
+          <div class="pkg-imgs"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 1 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">1 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-glow-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
           <ul class="pkg-includes"><li>1 Litre Halfcast Super Fort Herbal Soap</li><li>Fruit Essence Skin Glowing Oil</li></ul>
         </div>
         <div class="pkg-bottom">
@@ -425,7 +425,7 @@ footer strong{color:var(--pink2);}
       <div class="pkg vip fi">
         <div class="pkg-badge gold">👑 FULL ROUTINE</div><div class="pkg-top">
           <h3 class="pkg-name">2 Litre Halfcast Super Fort Herbal Soap + Fruit Essence Skin Glowing Oil</h3>
-          <div class="pkg-imgs"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 2 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">2 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-skin-glowing-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
+          <div class="pkg-imgs"><div><div class="pkg-img-item"><img src="images/halfcast-soap-tub.jpg" alt="Larose 2 Litre Halfcast Super Fort Herbal Soap" loading="lazy"></div><div class="pkg-img-label">2 Litre Halfcast Soap</div></div><div><div class="pkg-img-item"><img src="images/fruit-essence-glow-oil.jpg" alt="LaRose Fruit Essence Skin Glowing Oil" loading="lazy"></div><div class="pkg-img-label">Fruit Essence Skin Glowing Oil</div></div></div>
           <ul class="pkg-includes"><li>2 Litre Halfcast Super Fort Herbal Soap</li><li>Fruit Essence Skin Glowing Oil</li><li>Longer-lasting supply</li></ul>
         </div>
         <div class="pkg-bottom">
@@ -437,8 +437,8 @@ footer strong{color:var(--pink2);}
     </div>
 
 <div class="upg-note fi" style="display:flex;gap:12px;align-items:center;text-align:left;margin-top:34px">
-      <img src="images/facial-set-480.webp" alt="LaRose Facial Set: Facial Detox Toner, Baby Face Whitening Soap and All Clear Face Cream" width="84" height="77" loading="lazy" style="border-radius:10px;flex-shrink:0;background:#fff">
-      <div><b>Optional add-on: Facial Set — ₦17,000</b><br>Facial Detox Toner, Baby Face Whitening Soap and All Clear Face Cream. Tick it at checkout with any package, or leave it out.</div>
+      <img src="images/facial-set-480.webp" alt="LaRose Facial Set: Facial Detox Toner, face soap and All Clear Face Cream" width="84" height="77" loading="lazy" style="border-radius:10px;flex-shrink:0;background:#fff">
+      <div><b>Optional add-on: Facial Set — ₦17,000</b><br>Facial Detox Toner, face soap and All Clear Face Cream. Tick it at checkout with any package, or leave it out.</div>
     </div>
 
     <div class="delpol fi" id="delivery">
@@ -587,7 +587,7 @@ let skyUpsell=null,skyAdd=false;
 // The add-on is offered only when it is not already the chosen package.
 function skyAddOn(offerOnly){const s=document.getElementById('pr');const o=s&&s.options[s.selectedIndex];if(!skyUpsell||(o&&o.dataset.product===skyUpsell.code))return false;return offerOnly?true:skyAdd;}
 // The Facial Set's picture (optimised: 47 KB on phones), shown only when Skyfly offers that add-on.
-const SKY_UPSELL_IMG={'facial-set':{base:'https://roseskincare9-code.github.io/Larosenigeria/images/facial-set-',w:800,h:731,alt:'LaRose Complete Facial Set: Facial Detox Toner, Baby Face Whitening Soap and All Clear Face Cream'}};
+const SKY_UPSELL_IMG={'facial-set':{base:'https://roseskincare9-code.github.io/Larosenigeria/images/facial-set-',w:800,h:731,alt:'LaRose Complete Facial Set: Facial Detox Toner, face soap and All Clear Face Cream'}};
 function skyRenderUpsell(){
   const box=document.getElementById('skyUp');if(!box)return;
   if(!skyUpsell){box.style.display='none';return;}
